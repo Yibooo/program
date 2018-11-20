@@ -89,7 +89,7 @@ def row_count(arr):
 
 class QLearning(object):
     def __init__(self):
-        return
+      return
 
     ###  学習フェーズ  ###
     def learn(self):
@@ -105,43 +105,43 @@ class QLearning(object):
         # if(num_p_eNB <= Buf_limit):
           if(i>50): val = action     # val,action,stateを整理すべし
 
-          for k in range(rw_range):
-            num_p_eNB += min(bw_limit[val],arr_sum[i]) - p_process
-            if(num_p_eNB < 0):     num_p_eNB = 0
-            # Thres_cong = 1800 で、Buffer_linit = 2000だから必要
-            if(num_p_eNB >= 2000): num_p_eNB = 1999
-            eNB_arr.append(num_p_eNB)
+          num_p_eNB += min(bw_limit[val],arr_sum[i]) - p_process
+          if(num_p_eNB < 0):     num_p_eNB = 0
+          # Thres_cong = 1800 で、Buffer_linit = 2000だから必要
+          if(num_p_eNB >= 2000): num_p_eNB = 1999
+          eNB_arr.append(num_p_eNB)
 
-          avg_num_p = sum(eNB_arr[-rw_range:])/rw_range
-          state = int((avg_num_p-1)/unit_size)  # これで合ってるか不安
-                                                # stateは 0~20
-          reward = reward_arr[state]
-
-          reward_log.append(reward)
 
           if(i>1 and i%50 == 0):      # Policy Interval
-              if(i==50):  action = val
-              possible_actions = self._getPossibleActions(action)
-              action           = random.choice(possible_actions)
-              # Update Q-value
-              # Q(s,a) = r(s,a) + Gamma * max[Q(next_s, possible_actions)]
-              next_possible_actions = self._getPossibleActions(action)
-              # max_Q_next_s_aの第一引数がactionなのはオカシイ     
-              # 関数の定義されてる側でQ[state,action]ってなってるのに     
-              # これに対する代替案が必要 → 一回整理しないとな。。。
-              max_Q_next_s_a        = self._getMaxQvalue(action, next_possible_actions)
-              Q[int(state), action] = reward + GAMMA * max_Q_next_s_a
+            if(i==50):  action = val
 
-              if(j < 10 and i <= 300):
-                print("************")
-                print("Val = " + str(val))
-                print(reward)
-                print(max_Q_next_s_a)
-                print(type(max_Q_next_s_a))
-                print(state)
-                print(action)
-                print(Q[int(state), action])
-                print("************")
+            avg_num_p = sum(eNB_arr[-rw_range:])/rw_range
+            state = int((avg_num_p-1)/unit_size)  # これで合ってるか不安
+                                                  # stateは 0~20
+            reward = reward_arr[state]
+            reward_log.append(reward)
+
+            possible_actions = self._getPossibleActions(action)
+            action           = random.choice(possible_actions)
+            # Update Q-value
+            # Q(s,a) = r(s,a) + Gamma * max[Q(next_s, possible_actions)]
+            next_possible_actions = self._getPossibleActions(action)
+            # max_Q_next_s_aの第一引数がactionなのはオカシイ     
+            # 関数の定義されてる側でQ[state,action]ってなってるのに     
+            # これに対する代替案が必要 → 一回整理しないとな。。。
+            max_Q_next_s_a        = self._getMaxQvalue(action, next_possible_actions)
+            Q[int(state), action] = reward + GAMMA * max_Q_next_s_a
+
+            if(j < 10 and i <= 300):
+              print("************")
+              print("Val = " + str(val))
+              print(reward)
+              print(max_Q_next_s_a)
+              print(type(max_Q_next_s_a))
+              print(state)
+              print(action)
+              print(Q[int(state), action])
+              print("************")
 
 
         # ゴールしたら、またランダムな場所からスタート
@@ -152,11 +152,11 @@ class QLearning(object):
 
     def _getPossibleActions(self, val):
         if(val == 0):
-            return [0,1]
+          return [0,1]
         elif(val == 5):
-            return [4,5]
+          return [4,5]
         else:
-            return [int(val)-1, int(val), int(val)+1]
+          return [int(val)-1, int(val), int(val)+1]
 
     def _getMaxQvalue(self, state, possible_actions):
         return max([Q[state][i] for i in (possible_actions)])
@@ -171,14 +171,12 @@ class QLearning(object):
         for i in range(Time_Range):
 
         # if(num_p_eNB <= Buf_limit):
-          for k in range(rw_range):
-            num_p_eNB += min(bw_limit[val],arr_sum[i]) - p_process     
-            if(num_p_eNB < 0):     num_p_eNB = 0
-            if(num_p_eNB >= 2000): num_p_eNB = 1999
-            eNB_arr.append(num_p_eNB)
+          num_p_eNB += min(bw_limit[val],arr_sum[i]) - p_process     
+          if(num_p_eNB < 0):     num_p_eNB = 0
+          if(num_p_eNB >= 2000): num_p_eNB = 1999
+          eNB_arr.append(num_p_eNB)
 
-          avg_num_p = sum(eNB_arr[-rw_range:])/rw_range
-          state = int(avg_num_p/unit_size)
+
 
           ############### 報酬が最大となる行動を選択 ###############
           # get best action which maximaizes Q-value(s, a)
@@ -187,19 +185,22 @@ class QLearning(object):
           # 現状態(s)を固定で、行動(a=Action)を色々とった時のQの要素で一番大きい奴を抽出
 
           if(i>1 and i%50 == 0):      # Policy Interval
-
             if(i==50):  action = val
+
+            avg_num_p = sum(eNB_arr[-rw_range:])/rw_range
+            state = int((avg_num_p-1)/unit_size)
+
             possible_actions = self._getPossibleActions(action)
 
             max_Q = 0
             best_action_candidates = []
             for a in possible_actions:
-                a,state = int(a),int(state)
-                if Q[state][a] > max_Q:     # 次の状態への報酬が最も高い行動を選択
-                    best_action_candidates = [a,]
-                    max_Q = Q[state][a]
-                elif Q[state][a] == max_Q:  # 同じ報酬の値の行動があったらそれを選択
-                    best_action_candidates.append(a)
+              a,state = int(a),int(state)
+              if Q[state][a] > max_Q:     # 次の状態への報酬が最も高い行動を選択
+                best_action_candidates = [a,]
+                max_Q = Q[state][a]
+              elif Q[state][a] == max_Q:  # 同じ報酬の値の行動があったらそれを選択
+                best_action_candidates.append(a)
 
             # get a best action from candidates randomly
             best_action = random.choice(best_action_candidates)  # 報酬の高い次の状態から選択
